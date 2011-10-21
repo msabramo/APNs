@@ -2,19 +2,11 @@
 
 namespace Freegli\Component\APNs;
 
-class FeedbackHandler
+class FeedbackHandler extends BaseHandler
 {
-    private $connection;
-
-    public function __destruct()
-    {
-        fclose($this->connection);
-    }
-
-    public function setConnection($connection)
-    {
-        $this->connection = $connection;
-    }
+    const PRODUCTION_HOST = 'feedback.push.apple.com';
+    const SANDBOX_HOST    = 'feedback.sandbox.push.apple.com';
+    const PORT            = '2196';
 
     /**
      * Get Feedbacks from stream.
@@ -53,6 +45,6 @@ class FeedbackHandler
     {
         //TODO do it tuple by tuple?
 
-        return stream_get_contents($this->connection);
+        return stream_get_contents($this->getConnection());
     }
 }

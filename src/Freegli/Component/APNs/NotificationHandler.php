@@ -2,25 +2,17 @@
 
 namespace Freegli\Component\APNs;
 
-class NotificationHandler
+class NotificationHandler extends BaseHandler
 {
-    private $connection;
-
-    public function __destruct()
-    {
-        fclose($this->connection);
-    }
-
-    public function setConnection($connection)
-    {
-        $this->connection = $connection;
-    }
+    const PRODUCTION_HOST = 'gateway.push.apple.com';
+    const SANDBOX_HOST    = 'gateway.sandbox.push.apple.com';
+    const PORT            = '2195';
 
     public function send(Notification $pushNotification)
     {
         $binaryPushNotification = $pushNotification->toBinary();
 
-        $written = fwrite($this->connection, $binaryPushNotification);
+        $written = fwrite($this->getConnection(), $binaryPushNotification);
 
         //TODO handle error
     }
