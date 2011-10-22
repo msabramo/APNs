@@ -10,7 +10,7 @@ class ConnectionFactory
     private $certificatPassPhrase;
     private $sandbox;
 
-    public function __construct($certificatPath, $certificatPassPhrase, $sandbox = false)
+    public function __construct($certificatPath = null, $certificatPassPhrase = null, $sandbox = false)
     {
         $this->certificatPath       = $certificatPath;
         $this->certificatPassPhrase = $certificatPassPhrase;
@@ -26,10 +26,13 @@ class ConnectionFactory
      *
      * @throws ConnectionException
      */
-    private function getConnection($url)
+    public function getConnection($url)
     {
         $streamContext = stream_context_create();
-        stream_context_set_option($streamContext, 'ssl', 'local_cert', $this->certificatPath);
+
+        if ($this->certificatPath) {
+            stream_context_set_option($streamContext, 'ssl', 'local_cert', $this->certificatPath);
+        }
         if ($this->certificatPassPhrase) {
             stream_context_set_option($streamContext, 'ssl', 'passphrase', $this->certificatPassPhrase);
         }
