@@ -2,11 +2,22 @@
 
 namespace Freegli\Component\APNs;
 
+use Freegli\Component\APNs\Exception\ExceptionInterface;
+
 class FeedbackHandler extends BaseHandler
 {
     const PRODUCTION_HOST = 'feedback.push.apple.com';
     const SANDBOX_HOST    = 'feedback.sandbox.push.apple.com';
     const PORT            = '2196';
+
+    private $errors;
+
+    public function __construct($connectionFactory, $debug = false)
+    {
+        parent::__construct($connectionFactory, $debug);
+
+        $this->errors = array();
+    }
 
     /**
      * Get Feedbacks from stream.
@@ -16,6 +27,24 @@ class FeedbackHandler extends BaseHandler
     public function getFeedbacks()
     {
         return $this->extract($this->fetch());
+    }
+
+    /**
+     * Get errors from stream.
+     *
+     * @return Exception[]
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasErrors()
+    {
+        return (bool)count($this->errors);
     }
 
     /**
@@ -29,8 +58,11 @@ class FeedbackHandler extends BaseHandler
     {
         $feedbacks = array();
         foreach (str_split($binary, Feedback::LENGTH) as $binaryChunk) {
-            $feedbacks[] = new Feedback($binaryChunk);
-            //TODO log error
+            try {
+                $feedbacks[] = new Feedback($binaryChunk);
+            } catch (\Exception $e) {
+                $this->errors[] = $e;
+            }
         }
 
         return $feedbacks;
