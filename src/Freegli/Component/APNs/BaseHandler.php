@@ -4,12 +4,14 @@ namespace Freegli\Component\APNs;
 
 abstract class BaseHandler
 {
+    const PROTOCOL = 'ssl';
+
     private $connectionFactory;
 
     /**
      * @var resource
      */
-    private $connection;
+    private $resource;
 
     /**
      * @var string
@@ -20,7 +22,8 @@ abstract class BaseHandler
     {
         $this->connectionFactory = $connectionFactory;
 
-        $this->url = sprintf('ssl://%s:%s',
+        $this->url = sprintf('%s://%s:%s',
+            static::PROTOCOL,
             $debug ? static::SANDBOX_HOST : static::PRODUCTION_HOST,
             static::PORT
         );
@@ -28,20 +31,20 @@ abstract class BaseHandler
 
     public function __destruct()
     {
-        if (is_resource($this->connection)) {
-            fclose($this->connection);
+        if (is_resource($this->resource)) {
+            fclose($this->resource);
         }
     }
 
     /**
      * @return resource
      */
-    public function getConnection()
+    public function getResource()
     {
-        if (!$this->connection || feof($this->connection)) {
-            $this->connection = $this->connectionFactory->getConnection($this->url);
+        if (!$this->resource || feof($this->resource)) {
+            $this->resource = $this->connectionFactory->getConnection($this->url);
         }
 
-        return $this->connection;
+        return $this->resource;
     }
 }

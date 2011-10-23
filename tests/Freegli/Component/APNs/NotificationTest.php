@@ -8,6 +8,13 @@ class NotificationTest extends \PHPUnit_Framework_TestCase
 {
     public function testToBinary()
     {
+        $notification = self::getNotification();
+        $bin = file_get_contents(__DIR__.'/../../../Resources/notification.bin');
+        $this->assertEquals($bin, $notification->toBinary());
+    }
+
+    public static function getNotification()
+    {
         $notification = new Notification();
         $notification->setIdentifier(2);
         $notification->setExpiry(new \DateTime('2010-01-13 00:00:00'));
@@ -18,7 +25,6 @@ class NotificationTest extends \PHPUnit_Framework_TestCase
             )
         ));
 
-        $bin = file_get_contents(__DIR__.'/../../../Resources/notification.bin');
-        $this->assertEquals($bin, $notification->toBinary());
+        return $notification;
     }
 }
