@@ -8,13 +8,11 @@ class ConnectionFactory
 {
     private $certificatPath;
     private $certificatPassPhrase;
-    private $sandbox;
 
-    public function __construct($certificatPath = null, $certificatPassPhrase = null, $sandbox = false)
+    public function __construct($certificatPath = null, $certificatPassPhrase = null)
     {
         $this->certificatPath       = $certificatPath;
         $this->certificatPassPhrase = $certificatPassPhrase;
-        $this->sandbox              = $sandbox;
     }
 
     /**

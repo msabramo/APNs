@@ -24,17 +24,36 @@ class NotificationHandler extends BaseHandler
             //uncomplete write
             return false;
         }
-        if (!feof($this->getResource())) {
-            //get back error response
-            //TODO fix timeout issue when nothing to get
-            $error = fread($this->getResource(), ErrorResponse::LENGTH);
+
+        return true;
+    }
+
+    /**
+     * Get errors.
+     *
+     * @return ErrorResponse[]
+     */
+    public function getErrors()
+    {
+        $errors = array();
+        foreach (str_split($this->fetchErrors(), ErrorResponse::LENGTH) as $binaryChunk) {
             try {
-                return new ErrorResponse($error);
-            } catch (ExceptionInterface $e) {
+                $errors[] = new ErrorResponse($binaryChunk);
+            } catch (\Exception $e) {
                 //do nothing
             }
         }
 
-        return true;
+        return $errors;
+    }
+
+    /**
+     * Get binary string from resource.
+     *
+     * @return string
+     */
+    private function fetchErrors()
+    {
+        return stream_get_contents($this->getResource());
     }
 }

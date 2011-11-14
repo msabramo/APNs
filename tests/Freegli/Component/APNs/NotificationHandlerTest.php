@@ -20,6 +20,7 @@ class NotificationHandlerTest extends \PHPUnit_Framework_TestCase
 }
 
 namespace Freegli\Test;
+
 use Freegli\Component\APNs\NotificationHandler as BaseNotificationHandler;
 
 /**

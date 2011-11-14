@@ -69,7 +69,7 @@ class FeedbackHandler extends BaseHandler
     }
 
     /**
-     * Get binay string from connection.
+     * Get binary string from connection.
      *
      * @return string
      */
@@ -77,6 +77,6 @@ class FeedbackHandler extends BaseHandler
     {
         //TODO do it tuple by tuple?
 
-        return stream_get_contents($this->getConnection());
+        return stream_get_contents($this->getResource());
     }
 }
