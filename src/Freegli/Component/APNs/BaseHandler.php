@@ -31,9 +31,7 @@ abstract class BaseHandler
 
     public function __destruct()
     {
-        if (is_resource($this->resource)) {
-            fclose($this->resource);
-        }
+        $this->closeResource();
     }
 
     /**
@@ -41,10 +39,18 @@ abstract class BaseHandler
      */
     public function getResource()
     {
-        if (!$this->resource || feof($this->resource)) {
+        if (!$this->resource) {
             $this->resource = $this->connectionFactory->getConnection($this->url);
         }
 
         return $this->resource;
+    }
+
+    public function closeResource()
+    {
+        if (is_resource($this->resource)) {
+            fclose($this->resource);
+        }
+        $this->resource = null;
     }
 }

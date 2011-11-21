@@ -3,6 +3,8 @@
 namespace Freegli\Component\APNs;
 
 use Freegli\Component\APNs\Exception\ExceptionInterface;
+use Freegli\Component\APNs\Exception\LengthException;
+use Freegli\Component\APNs\Exception\WriteException;
 
 class NotificationHandler extends BaseHandler
 {
@@ -14,15 +16,22 @@ class NotificationHandler extends BaseHandler
     {
         $binaryPushNotification = $pushNotification->toBinary();
 
-        $written = fwrite($this->getResource(), $binaryPushNotification);
+        try {
+            try {
+                $written = fwrite($this->getResource(), $binaryPushNotification);
+            } catch (\Exception $e) {
+                throw new WriteException('Unable to write into resource', 0, $e);
+            }
+            if ($written === false) {
+                throw new WriteException('Unable to write into resource');
+            }
+            if ($written != strlen($binaryPushNotification)) {
+                throw new LengthException('Partialy write into resource');
+            }
+        } catch (ExceptionInterface $e) {
+            $this->closeResource();
 
-        if ($written == false) {
-            //fwrite error
-            return false;
-        }
-        if ($written != strlen($binaryPushNotification)) {
-            //uncomplete write
-            return false;
+            throw $e;
         }
 
         return true;
