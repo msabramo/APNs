@@ -1,6 +1,6 @@
 <?php
 
-namespace Freegli\Component\APNs;
+namespace Freegli\Tests\Component\APNs;
 
 use Freegli\Component\APNs\Notification;
 
@@ -9,7 +9,7 @@ class NotificationTest extends \PHPUnit_Framework_TestCase
     public function testToBinary()
     {
         $notification = self::getNotification();
-        $bin = file_get_contents(__DIR__.'/../../../Resources/notification.bin');
+        $bin = file_get_contents(__DIR__.'/../../../../Resources/notification.bin');
         $this->assertEquals($bin, $notification->toBinary());
     }
 

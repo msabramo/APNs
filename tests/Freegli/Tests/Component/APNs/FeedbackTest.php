@@ -1,6 +1,6 @@
 <?php
 
-namespace Freegli\Component\APNs;
+namespace Freegli\Tests\Component\APNs;
 
 use Freegli\Component\APNs\Feedback;
 
@@ -24,7 +24,7 @@ class FeedbackTest extends \PHPUnit_Framework_TestCase
 
     public function testConstruct()
     {
-        $bin = file_get_contents(__DIR__.'/../../../Resources/feedback.bin');
+        $bin = file_get_contents(__DIR__.'/../../../../Resources/feedback.bin');
         $feedback = new Feedback($bin);
         $this->assertEquals('1313928959', $feedback->getTimestamp()->format('U'));
         $this->assertEquals('32', $feedback->getTokenLength());

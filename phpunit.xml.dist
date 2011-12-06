@@ -13,7 +13,7 @@
     bootstrap="tests/bootstrap.php">
     <testsuites>
         <testsuite name="APNs Test Suite">
-            <directory>tests/Freegli/Component/APNs</directory>
+            <directory>tests/Freegli/Tests/Component/APNs</directory>
         </testsuite>
     </testsuites>
 

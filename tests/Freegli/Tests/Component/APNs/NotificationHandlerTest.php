@@ -1,6 +1,6 @@
 <?php
 
-namespace Freegli\Component\APNs;
+namespace Freegli\Tests\Component\APNs;
 
 use Freegli\Component\APNs\ConnectionFactory;
 use Freegli\Test\NotificationHandler;
