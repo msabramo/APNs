@@ -16,6 +16,10 @@ class NotificationHandlerTest extends \PHPUnit_Framework_TestCase
         $notification = NotificationTest::getNotification();
 
         $nh->send($notification);
+
+        $this->assertEquals($notification, $nh->lastPushNotification);
+        $bin = file_get_contents(__DIR__.'/../../../../Resources/notification.bin');
+        $this->assertEquals($bin, $nh->lastBinaryPushNotification);
     }
 }
 
@@ -28,8 +32,12 @@ use Freegli\Component\APNs\NotificationHandler as BaseNotificationHandler;
  */
 class NotificationHandler extends BaseNotificationHandler
 {
-    const PROTOCOL        = 'tcp';
-    const PRODUCTION_HOST = 'localhost';
-    const SANDBOX_HOST    = 'localhost';
-    const PORT            = '80';
+    public function send(\Freegli\Component\APNs\Notification $pushNotification)
+    {
+        $this->lastPushNotification = $pushNotification;
+        $this->lastBinaryPushNotification = $pushNotification->toBinary();
+    }
+
+    public $lastPushNotification = null;
+    public $lastBinaryPushNotification = null;
 }
