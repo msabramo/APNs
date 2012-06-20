@@ -9,7 +9,7 @@ class ConnectionFactoryTest extends \PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $cf = new ConnectionFactory();
-        $connection = $cf->getConnection('tcp://localhost:80');
+        $connection = $cf->getConnection('tcp://www.google.com:80');
 
         $this->assertTrue(is_resource($connection));
         $this->assertFalse(feof($connection));
